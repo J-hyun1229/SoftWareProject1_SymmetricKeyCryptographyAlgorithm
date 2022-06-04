@@ -12,7 +12,7 @@ OutputEncodeType = sys.stdout.encoding
 UniConvertedData = [] # 유니코드로 변환된 데이터
 cipherText = "" # 암호화된 데이터
 RejectChars = ['\n', '\b', '\r', '\t', '\'', '\"', '#']
-IsContainsRC = False
+IsContainsRC = True
 
 # =========================== Line ===============================
 
@@ -26,6 +26,7 @@ def StringToUniCode(string_d, datalength) :
 # =========================== Line ===============================
 
 def CreateKeyList(datalength) :
+    print("In CreateKeyList()")
     key_li = []
     for i in range(0, datalength) :
         key_li.append(random.randrange(97, 123))
@@ -44,6 +45,7 @@ def CreateKeyString(keyList) :
 # =========================== Line ===============================
 
 def CreateXorList(uni_d, keyList, datalength) :
+    print("In CreateXorList()")
     xorList = []
     for i in range(0, datalength) :
         xorList.append(uni_d[i] ^ keyList[i])
@@ -53,6 +55,7 @@ def CreateXorList(uni_d, keyList, datalength) :
 # =========================== Line ===============================
 
 def NumConvertFunc(List, convert_n, datalength) :
+    print("In NumConvertFunc()")
     convertedList = []
     
     for i in range(0, dataLength) :
@@ -72,12 +75,24 @@ def NumConvertFunc(List, convert_n, datalength) :
 
 # =========================== Line ===============================
 
-def CreateChiperText(convertedList, datalength) :
+def CreateCipherText(convertedList, datalength) :
+    print("In CreateChiperText()")
     cipher_Text =''
     for i in range(0, dataLength) :
         cipher_Text += chr(convertedList[i])
 
     return cipher_Text
+
+# =========================== Line ===============================
+
+def checkRC(cipher_text) :
+    print("In checkRC")
+    for ch in RejectChars :
+        if ch in cipher_text :
+            print("it contains RC")
+            return True
+
+    return False
 
 # ========================= Main Code =============================
 
@@ -98,7 +113,8 @@ UniConvertedData = StringToUniCode(plainText, dataLength)
 conversionNum = random.randrange(4, 10)
 # print("선택된 진법: ", conversionNum)
 
-while True :
+IsContainsRC = True
+while IsContainsRC :
     # 키 생성
     keyList = CreateKeyList(dataLength)
 
@@ -109,17 +125,12 @@ while True :
     ConvertedXorList = NumConvertFunc(XorList, conversionNum, dataLength)
     
     # 암호문 생성
-    for i in range(0, dataLength) :
-        cipherText += chr(ConvertedXorList[i])
-
+    cipherText = CreateCipherText(ConvertedXorList, dataLength)
+    
     # 화이트 스페이스가 있다면 암호문을 다시 생성
-    IsContainsRc = False
-    for ch in RejectChars :
-        if ch in cipherText :
-            IsContainsRC = True
-            cipherText = ''
+    IsContainsRC = checkRC(cipherText) # 있으면 True
 
-    if(IsContainsRC == False) : break
+    print()
     
 keyString = CreateKeyString(keyList)
 

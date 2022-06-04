@@ -34,8 +34,11 @@ def KeyStringToUniCode(key_string, datalength) :
 # ========================= Line =============================
 
 def reXorFunc(cipher_list, key_list, datalength) :
-    
+    reXor_list = []
+    for i in range(0, datalength) :
+        reXor_list.append(cipher_list[i] ^ key_list[i])
 
+    return reXor_list
 # ========================= Line =============================
 
 cipherText = input("암호문을 입력하세요 >> ")
