@@ -6,10 +6,54 @@ conversionNum = 0
 keyString = ''
 keyList = []
 
+# ========================= Line =============================
+
+def CipherToUniCode(cipher_t, datalength) :
+    c_List = []
+    for i in range(0, datalength) :
+        c_List.append(ord(cipher_t[i]))
+
+    return c_List
+
+# ========================= Line =============================
+
+def Todigit(uni_d, convert_n, datalength) :
+    for i in range(0, datalength) :
+        tmpNum = uni_d[i]
+        uni_d[i] = int(str(tmpNum), convert_n)
+
+# ========================= Line =============================
+
+def KeyStringToUniCode(key_string, datalength) :
+    key_list = []
+    for i in range(0, datalength) :
+        key_list.append(ord(key_string[i]))
+
+    return key_list
+
+# ========================= Line =============================
+
+def reXorFunc(cipher_list, key_list, datalength) :
+    reXor_list = []
+    for i in range(0, datalength) :
+        reXor_list.append(cipher_list[i] ^ key_list[i])
+
+    return reXor_list
+
+# ========================= Line =============================
+
+def CreatePlainText(reXor_list, datalength) :
+    plain_text = ''
+    for i in range(0, datalength) :
+        plain_text += chr(reXor_list[i])
+
+    return plain_text
+
+# ========================= Line =============================
 
 cipherText = input("암호문을 입력하세요 >> ")
-conversionNum = int(input("변환에 사용된 진법을 입력하세요 >>"))
 keyString = input("키 데이터를 입력하세요 >>")
+conversionNum = int(input("변환에 사용된 진법을 입력하세요 >>"))
 
 dataLength = len(cipherText)
 print("암호문을 변환하는중....")
