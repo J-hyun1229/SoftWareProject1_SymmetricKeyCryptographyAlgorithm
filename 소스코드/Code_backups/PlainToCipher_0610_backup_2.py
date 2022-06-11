@@ -3,7 +3,7 @@ import random
 import os
 
 plainText = "" # 암호화할 데이터
-keyString = '' # 암,복호화에 사용할 키
+keyString = "" # 암,복호화에 사용할 키
 keyList = [] # 연산을 위해 리스트화시킨 키 
 conversionNum = 0 # 변환할 진법
 XorList = []
@@ -122,33 +122,32 @@ print("데이터 암호화 중...")
 
 conversionNum = random.randrange(4, 10)
 
-for tmpStr in inList :
-    plainText += tmpStr
+for plainStr in inList :
 
-dataLength = len(plainText)
- 
-# 데이터를 유니코드로 변환
-UniConvertedData = StringToUniCode(plainText, dataLength)
-
-# IsContainsRC = True
-# while IsContainsRC :
-# 키 생성
-keyList = CreateKeyList(dataLength)
-keyString = CreateKeyString(keyList)
-
-# 평문과 키를 XOR
-XorList = CreateXorList(UniConvertedData, keyList, dataLength)
-
-# XorList를 진법변환
-ConvertedXorList = NumConvertFunc(XorList, conversionNum, dataLength)
+    dataLength = len(plainStr)
     
-# 암호문 생성
-cipherText = CreateCipherText(ConvertedXorList, dataLength)
-    
-# 화이트 스페이스가 있다면 암호문을 다시 생성
-# IsContainsRC = checkRC(cipherText) # 있으면 True
+    # 데이터를 유니코드로 변환
+    UniConvertedData = StringToUniCode(plainStr, dataLength)
 
-outFp.writelines(cipherText)
+    # IsContainsRC = True
+    # while IsContainsRC :
+    # 키 생성
+    keyList = CreateKeyList(dataLength)
+    keyString += CreateKeyString(keyList)
+
+    # 평문과 키를 XOR
+    XorList = CreateXorList(UniConvertedData, keyList, dataLength)
+
+    # XorList를 진법변환
+    ConvertedXorList = NumConvertFunc(XorList, conversionNum, dataLength)
+    
+    # 암호문 생성
+    cipherText = CreateCipherText(ConvertedXorList, dataLength)
+    
+    # 화이트 스페이스가 있다면 암호문을 다시 생성
+    # IsContainsRC = checkRC(cipherText) # 있으면 True
+
+    outFp.writelines(cipherText)
     
 inFp.close()
 outFp.close()

@@ -1,6 +1,3 @@
-import sys
-import os
-
 cipherText = '' # 암호문
 cipherList = [] # 유니코드로 변환시킨 암호문
 reXorList = []
@@ -8,13 +5,6 @@ plainText = ''
 conversionNum = 0
 keyString = ''
 keyList = []
-InputEncodeType = 'UTF-8'
-OutputEncodeType = 'UTF-8'
-infilePath = ''
-outfilePath = ''
-inFp = None
-outFp = None
-inList = ''
 
 # ========================= Line =============================
 
@@ -64,31 +54,13 @@ def CreatePlainText(reXor_list, datalength) :
 
 # ========================= Main Code =============================
 
-infilePath = input("암호 파일의 위치를 입력하세요 >> ")
-outfilePath = input("복호문을 저장할 파일 위치를 입력하세요 >>")
-
-inFp = open(infilePath, "r",  encoding = InputEncodeType)
-outFp = open(outfilePath, "w", encoding = OutputEncodeType)
-
-if os.path.exists(infilePath) == False :
-    print(infilepath + ": 파일이 없습니다.")
-    sys.exit(0)
-
-if os.path.exists(outfilePath) == False :
-    print(outfilepath + ": 파일이 없습니다.")
-    sys.exit(0)
-
-print("파일이 확인되었습니다!")
-
-keyString = input("키 데이터를 입력하세요 >> ")
-
+cipherText = input("암호문을 입력하세요 >> ")
+keyString = input("키 데이터를 입력하세요 >>")
 conversionNum = int(input("변환에 사용된 진법을 입력하세요 >>"))
 
-inList = inFp.readlines()
-for tmpStr in inList :
-    cipherText += tmpStr
-
 dataLength = len(cipherText)
+
+print("암호문을 변환하는중....")
 
 # 암호문 -> 유니코드(n진법)
 cipherList = CipherToUniCode(cipherText, dataLength)
@@ -110,8 +82,4 @@ reXorList = reXorFunc(cipherList, keyList, dataLength)
 
 plainText = CreatePlainText(reXorList, dataLength)
 
-outFp.writelines(plainText)
-
-inFp.close()
-outFp.close()
-print("복호화가 완료되었습니다!")
+print("복호화된 평문: ", plainText)
