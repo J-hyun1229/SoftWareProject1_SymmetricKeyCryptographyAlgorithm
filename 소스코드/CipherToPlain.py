@@ -84,9 +84,7 @@ keyString = input("키 데이터를 입력하세요 >> ")
 
 conversionNum = int(input("변환에 사용된 진법을 입력하세요 >>"))
 
-inList = inFp.readlines()
-for tmpStr in inList :
-    cipherText += tmpStr
+cipherText = inFp.read()
 
 dataLength = len(cipherText)
 
@@ -110,7 +108,7 @@ reXorList = reXorFunc(cipherList, keyList, dataLength)
 
 plainText = CreatePlainText(reXorList, dataLength)
 
-outFp.writelines(plainText)
+outFp.write(plainText)
 
 inFp.close()
 outFp.close()

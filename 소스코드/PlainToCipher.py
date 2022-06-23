@@ -12,8 +12,6 @@ InputEncodeType = 'UTF-8'
 OutputEncodeType = 'UTF-8'
 UniConvertedData = [] # 유니코드로 변환된 데이터
 cipherText = "" # 암호화된 데이터
-RejectChars = ['\n', '\b', '\r', '\t', '\'', '\"', '#']
-IsContainsRC = True
 infilePath = '' # 암호화할 원본파일 경로
 outfilePath = '' # 암호화된 파일을 저장할 경로
 inFp = None
@@ -89,21 +87,10 @@ def CreateCipherText(convertedList, datalength) :
 
     return cipher_Text
 
-# =========================== Line ===============================
-
-def checkRC(cipher_text) :
-    print("In checkRC")
-    for ch in RejectChars :
-        if ch in cipher_text :
-            print("it contains RC\n")
-            return True
-
-    return False
-
 # ========================= Main Code =============================
 
-infilePath = input("암호화할 파일의 경로를 입력하세요:")
-outfilePath = input("암호파일을 저장할 위치를 입력하세요.(공백 입력시 현재위치에 저장):")
+infilePath = input("암호화할 파일의 경로를 입력하세요 >> ")
+outfilePath = input("암호파일을 저장할 위치를 입력하세요 >> ")
 inFp = open(infilePath, "r",  encoding = InputEncodeType)
 outFp = open(outfilePath, "w", encoding = OutputEncodeType)
 
@@ -116,22 +103,17 @@ if os.path.exists(outfilePath) == False :
     sys.exit(0)
     
 
-inList = inFp.readlines()
+plainText = inFp.read()
 
 print("데이터 암호화 중...")
 
 conversionNum = random.randrange(4, 10)
-
-for tmpStr in inList :
-    plainText += tmpStr
 
 dataLength = len(plainText)
  
 # 데이터를 유니코드로 변환
 UniConvertedData = StringToUniCode(plainText, dataLength)
 
-# IsContainsRC = True
-# while IsContainsRC :
 # 키 생성
 keyList = CreateKeyList(dataLength)
 keyString = CreateKeyString(keyList)
@@ -144,11 +126,9 @@ ConvertedXorList = NumConvertFunc(XorList, conversionNum, dataLength)
     
 # 암호문 생성
 cipherText = CreateCipherText(ConvertedXorList, dataLength)
-    
-# 화이트 스페이스가 있다면 암호문을 다시 생성
-# IsContainsRC = checkRC(cipherText) # 있으면 True
 
-outFp.writelines(cipherText)
+
+outFp.write(cipherText)
     
 inFp.close()
 outFp.close()
